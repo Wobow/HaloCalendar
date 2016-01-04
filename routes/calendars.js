@@ -112,7 +112,14 @@ router.post('/:calendar/members/invites', auth, function(req, res, next) {
     if (!req.body.id || !req.body.role)
 	return res.status(400).json({Message: 'Bad request'});
     var invite = new Invite();
-    
+    invite.from = req.payload;
+    User.findById(req.body.id, function(err, user) {
+	if (err)
+	    return next(err);
+	if (_.find(req.calendar.members, function(member) {return member._id.equals(req.body.id);}) != undefined)
+	    return res.status(409).json({Message: 'This user is already a member'});
+	
+    });
 });
 
 module.exports = router;
