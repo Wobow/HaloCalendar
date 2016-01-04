@@ -1,0 +1,3 @@
+clear
+export HALOCOMPSECRET="theHellOfASecretKeyMoterfucker"
+npm start
