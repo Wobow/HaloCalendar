@@ -36,7 +36,7 @@ UserSchema.methods.generateJWT = function()
     exp.setDate(today.getDate() + 60);
     return (jwt.sign({
 	_id: this._id,
-	username: this.login,
+	username: this.displayName,
 	exp: parseInt(exp.getTime() / 1000)
     }, process.env.HALOCOMPSECRET));
 };

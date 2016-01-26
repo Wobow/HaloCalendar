@@ -4,6 +4,12 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var passport = require('passport');
 var User = mongoose.model('User');
+var Invite = mongoose.model('Invite');
+var Member = mongoose.model('Member');
+var Calendar = mongoose.model('Calendar');
+var Notification = mongoose.model('Notification');
+var Group = mongoose.model('Group');
+var Event = mongoose.model('Event');
 
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
@@ -40,6 +46,39 @@ router.post('/register', function(req, res, next) {
 	    return res.status(409).json({message: 'Login already used'});
 	return res.json({access_token: user.generateJWT()});
     });
+});
+
+// MEANT TO BE DELETED
+router.get('/dump', function(req, res, next) {
+    User.remove({}, function(err) {
+	if (err)
+	    next(err);
+    });
+    Calendar.remove({}, function(err) {
+	if (err)
+	    next(err);
+    });
+    Member.remove({}, function(err) {
+	if (err)
+	    next(err);
+    });
+    Invite.remove({}, function(err) {
+	if (err)
+	    next(err);
+    });
+    Event.remove({}, function(err) {
+	if (err)
+	    next(err);
+    });
+    Notification.remove({}, function(err) {
+	if (err)
+	    next(err);
+    });
+    Group.remove({}, function(err) {
+	if (err)
+	    next(err);
+    });
+    return res.status(204).send();
 });
 
 module.exports = router;

@@ -13,7 +13,7 @@ var auth = jwt({secret: process.env.HALOCOMPSECRET, userProperty: 'payload'});
 var _ = require('underscore');
 
 router.param('user', function(req, res, next, id) {
-    var query = User.findById(id);
+    var query = User.findById(id).populate('friends notifications invites groups calendar');
 
     query.exec(function (err, user) {
 	if (err)
@@ -74,6 +74,10 @@ router.get('/:user/', function(req, res, next) {
 	});
 });
 
+router.get('/:user/notifications', function(req, res, next) {
+    return res.json(req.user.notifications);
+});
+
 router.get('/:user/calendars', function(req, res, next) {
     req.user.populate('calendars', function (err, user) {
 	if (err)
@@ -81,5 +85,6 @@ router.get('/:user/calendars', function(req, res, next) {
 	res.json({'CalendarCount': user.calendars.length, 'Results' : user.calendars});
     });
 });
+
 
 module.exports = router;

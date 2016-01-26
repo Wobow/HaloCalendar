@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var _= require('underscore');
 
 var CalendarSchema = new mongoose.Schema({
     name: String,
@@ -13,5 +14,18 @@ var CalendarSchema = new mongoose.Schema({
     groups: [{type: mongoose.Schema.Types.ObjectId, ref: 'Group'}],
     description: String
 });
+
+CalendarSchema.methods.hasRank = function(ranksRaw)
+{
+    var ranks = ranksRaw.split(' ');
+    for (var i = 0; i < ranks.length; i++)
+    {
+	if (_.find(this.members, function(mbr) {
+	    return mbr.role === ranks[i];
+	}))
+	    return (true);
+    }
+    return (false);
+};
 
 mongoose.model('Calendar', CalendarSchema);
